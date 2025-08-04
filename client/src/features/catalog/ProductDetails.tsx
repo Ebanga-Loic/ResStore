@@ -1,6 +1,5 @@
-import { useParams } from "react-router-dom";
-import { Product } from "../../app/models/product";
-import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
+
 import {
   Button,
   Divider,
@@ -12,36 +11,30 @@ import {
   TableRow,
   TextField,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
+import { useFetProductDetailsQuery } from './catalogApi';
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const [product, setProduct] = useState<Product | null>(null);
+  const { data: product, isLoading } = useFetProductDetailsQuery(id ? +id : 0);
 
-  useEffect(() => {
-    fetch(`https://localhost:5001/api/products/${id}`)
-      .then((response) => response.json())
-      .then((data) => setProduct(data))
-      .catch((error) => console.log(error));
-  }, [id]);
-
-  if (!product) return <div>Loading...</div>;
+  if (!product || isLoading) return <div>Loading...</div>;
 
   const productDetails = [
-    { label: "Name", value: product.name },
-    { label: "Description", value: product.description },
-    { label: "Type", value: product.type },
-    { label: "Brand", value: product.brand },
-    { label: "Quantity in stock", value: product.quantityInStock },
+    { label: 'Name', value: product.name },
+    { label: 'Description', value: product.description },
+    { label: 'Type', value: product.type },
+    { label: 'Brand', value: product.brand },
+    { label: 'Quantity in stock', value: product.quantityInStock },
   ];
 
   return (
-    <Grid2 container spacing={6} maxWidth="lg" sx={{ mx: "auto" }}>
+    <Grid2 container spacing={6} maxWidth="lg" sx={{ mx: 'auto' }}>
       <Grid2 size={6}>
         <img
           src={product?.pictureUrl}
           alt={product.name}
-          style={{ width: "100%" }}
+          style={{ width: '100%' }}
         />
       </Grid2>
       <Grid2 size={6}>
@@ -51,11 +44,11 @@ export default function ProductDetails() {
           ${(product.price / 100).toFixed(2)}
         </Typography>
         <TableContainer>
-          <Table sx={{ "& td": { fontSize: "1.2rem" } }}>
+          <Table sx={{ '& td': { fontSize: '1.2rem' } }}>
             <TableBody>
               {productDetails.map((detail, index) => (
                 <TableRow key={index}>
-                  <TableCell sx={{ fontWeight: "bold" }}>
+                  <TableCell sx={{ fontWeight: 'bold' }}>
                     {detail.label}
                   </TableCell>
                   <TableCell>{detail.value}</TableCell>
@@ -76,7 +69,7 @@ export default function ProductDetails() {
           </Grid2>
           <Grid2 size={6}>
             <Button
-              sx={{ height: "55px" }}
+              sx={{ height: '55px' }}
               color="primary"
               size="large"
               variant="contained"
