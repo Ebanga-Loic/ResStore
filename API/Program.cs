@@ -12,7 +12,7 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 });
 
 builder.Services.AddCors();
-builder.Services.AddTransient< ExceptionMiddleware>();
+builder.Services.AddTransient<ExceptionMiddleware>();
 
 var app = builder.Build();
 
@@ -20,7 +20,7 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(otp =>
 {
-    otp.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:3000");
+    otp.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("https://localhost:3000");
 });
 
 app.MapControllers();
